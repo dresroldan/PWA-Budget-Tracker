@@ -10,7 +10,7 @@
   ## Usage:
   When the user loads the page, they are presented with the budget tracker dashboard. The user enters their transaction and transaction amount, and can either click the 'add funds' or 'subtract funds' button. Once the user either adds or subtracts an expense, the transaction object will dynamically appear on a chart using chart.js.
   ## Contribution
-  Andres Roldan
+  Andrés Roldán
  
 ## Questions
   For more questions about the Generator, please contact me at:
