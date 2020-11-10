@@ -1,5 +1,5 @@
-const CACHE_NAME = 'my-site-cache-v1';
-const DATA_CACHE_NAME = 'data-cache-v1';
+const CACHE_NAME = "my-site-cache-v1";
+const DATA_CACHE_NAME = "data-cache-v1";
 
 var filesToCache = [
   "/",
@@ -8,31 +8,29 @@ var filesToCache = [
   "/manifest.json",
   "/styles.css",
   "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png"
+  "/icons/icon-512x512.png",
 ];
 
 // install
-self.addEventListener("install", function(event) {
+self.addEventListener("install", function (event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
+    caches.open(CACHE_NAME).then(function (cache) {
       console.log("Opened cache");
       return cache.addAll(filesToCache);
-     
     })
-  
   );
   self.skipWaiting();
 });
-
-
 
 self.addEventListener("fetch", function (evt) {
   // cache successful requests to the API
   if (evt.request.url.includes("/api/")) {
     evt.respondWith(
-      caches.open(DATA_CACHE_NAME).then(cache => {
+      caches
+        .open(DATA_CACHE_NAME)
+        .then((cache) => {
           return fetch(evt.request)
-            .then(response => {
+            .then((response) => {
               // If the response was good, clone it and store it in the cache.
               if (response.status === 200) {
                 cache.put(evt.request.url, response.clone());
@@ -40,11 +38,12 @@ self.addEventListener("fetch", function (evt) {
 
               return response;
             })
-            .catch(err => {
+            .catch((err) => {
               // Network request failed, try to get it from the cache.
               return cache.match(evt.request);
             });
-        }).catch(err => console.log(err))
+        })
+        .catch((err) => console.log(err))
     );
 
     return;
@@ -64,5 +63,3 @@ self.addEventListener("fetch", function (evt) {
     })
   );
 });
-  
-  

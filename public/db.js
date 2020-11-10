@@ -2,12 +2,9 @@ const indexedDB =
   window.indexedDB ||
   window.mozIndexedDB ||
   window.webkitIndexedDB ||
-  window.msIndexedDB ||
-  window.shimIndexedDB;
-
+  window.msIndexedDB;
 let db;
 
-// new db request for a "budget" database.
 const request = indexedDB.open("budget", 1);
 
 request.onupgradeneeded = ({ target }) => {
@@ -56,7 +53,10 @@ function checkDatabase() {
           "Content-Type": "application/json",
         },
       })
-        .then((response) => response.json())
+        .then((response) => {
+          return response.json();
+        })
+
         .then(() => {
           // if successful, open a transaction on your pending db
           const transaction = db.transaction(["pending"], "readwrite");
@@ -70,7 +70,6 @@ function checkDatabase() {
     }
   };
 }
-
 
 // listen for app coming back online
 window.addEventListener("online", checkDatabase);
